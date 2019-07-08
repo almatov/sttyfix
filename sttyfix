@@ -51,3 +51,4 @@ fcntl.fcntl( sys.stdin.fileno(), fcntl.F_SETFL, flags )
 # Set new terminal size
 os.system( "stty rows %d cols %d" % (rows, cols) )
 fd.write( b'\033[%d;%dH' % (row, col) )
+
