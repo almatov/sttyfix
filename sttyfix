@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+#
+# Copyright (C) 2019 Askar Almatov
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+"""Fix stty size for serial terminal"""
+
+import fcntl, os, re, select, struct, sys, termios, time, tty
+
+# Open terminal device
+fd = open( '/dev/tty', 'wb+', buffering=0 )
+
+# Save the current terminal state
+attr = termios.tcgetattr( sys.stdin )
+flags = fcntl.fcntl( sys.stdin.fileno(), fcntl.F_GETFL )
+
+# Set terminal to ECHO-OFF NONBLOCK mode
+os.system( "stty -echo" )
+fcntl.fcntl( sys.stdin.fileno(), fcntl.F_SETFL, flags | os.O_NONBLOCK )
+
+# Get current cursor position 
+fd.write( b'\033[6n' )
+tty.setcbreak( sys.stdin )
+time.sleep( 0.15 )
+select.select( [fd], [], [] )
+row, col = map( int, re.findall(r'\d+', sys.stdin.read()) )
+
+# Get termninal window size
+fd.write( b'\033[7\033[r\033[999;999H\033[6n' )
+tty.setcbreak( sys.stdin )
+time.sleep( 0.16 )
+select.select( [fd], [], [] )
+rows, cols = map( int, re.findall(r'\d+', sys.stdin.read()) )
+
+# Restore terminal state
+termios.tcsetattr( sys.stdin.fileno(), termios.TCSAFLUSH, attr )
+fcntl.fcntl( sys.stdin.fileno(), fcntl.F_SETFL, flags )
+
+# Set new terminal size
+os.system( "stty rows %d cols %d" % (rows, cols) )
+fd.write( b'\033[%d;%dH' % (row, col) )
