@@ -16,8 +16,8 @@ the utlity is to copy-paste to the console.
 Run this
 
 	$ cat << EOF | sudo tee /usr/local/bin/sttyfix > /dev/null
-	-- this is the copy-pasted sttyfix utility body --
-	$ EOF
+	> -- this is the copy-pasted sttyfix utility body --
+	> EOF
 	$ sudo chmod a+x /usr/local/bin/sttyfix
 
 Check the result
