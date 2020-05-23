@@ -1,9 +1,9 @@
 # sttyfix utility
 
 This is a Python written utility that fixes the stty size for serial console to
-the actual window size. The default stty size on serial console is only 24x80.
+the actual window size. The default stty size on serial console is only 80x24.
 When executing vi, less, or other commands the display outputs text in a small
-24x80 fragment of your terminal window. This utulity fixes it.
+80x24 fragment of your terminal window. This utulity fixes it.
 
 ## How to use it.
 
@@ -20,14 +20,19 @@ Run this
 	> EOF
 	$ sudo chmod a+x /usr/local/bin/sttyfix
 
+Check python availability because some systems only have python3. Edit sttyfix shebang
+or create a python symlink to fix it.
+
 Check the result
 
 	$ stty size
 	$ sttyfix
 	$ stty size
 
-To fix stty size permanently on booting add these lines to /etc/profile
+To run sttyfix on booting Linux add this line to /etc/profile
 
-	if [[ $(ps -o 'tty=' -p $$) =~ "ttyS" ]] ; then
-	    /usr/local/bin/sttyfix
-	fi
+	if [[ $(ps -o 'tty=' -p $$) =~ "ttyS" ]] ; then /usr/local/bin/sttyfix; fi
+
+To run sttyfix on booting FreeBSD add this line to /etc/csh.cshrc
+
+	if (( `ps -o 'tty=' -p $$` =~ ttyu* )) /usr/local/bin/sttyfix
