@@ -5,7 +5,7 @@ the actual window size. The default stty size on serial console is only 80x24.
 When executing vi, less, or other commands the display outputs text in a small
 80x24 fragment of your terminal window. This utulity fixes it.
 
-## How to use it.
+## How to install
 
 Usually when using the serial console you set up a new system without network
 connectivity yet.  In this case you should use a serial connection to transfer
@@ -20,8 +20,10 @@ Run this
 	> EOF
 	$ sudo chmod a+x /usr/local/bin/sttyfix
 
-Check python availability because some systems only have python3. Edit sttyfix shebang
-or create a python symlink to fix it.
+Check python availability because some systems only have python3. Edit sttyfix
+shebang or create a python symlink to fix it.
+
+## How to use
 
 Check the result
 
@@ -31,7 +33,7 @@ Check the result
 
 To run sttyfix on booting Linux add this line to /etc/profile
 
-	if [[ $(ps -o 'tty=' -p $$) =~ "ttyS" ]] ; then /usr/local/bin/sttyfix; fi
+	if [[ $(ps -o 'tty=' -p $$) =~ "ttyS" ]]; then /usr/local/bin/sttyfix; fi
 
 To run sttyfix on booting FreeBSD add this line to /etc/csh.cshrc
 
