@@ -20,9 +20,6 @@ Run this
 	> EOF
 	$ sudo chmod a+x /usr/local/bin/sttyfix
 
-Check python availability because some systems only have python3. Edit sttyfix
-shebang or create a python symlink to fix it.
-
 ## How to use
 
 Check the result
