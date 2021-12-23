@@ -30,7 +30,7 @@ Check the result
 
 To run sttyfix on booting Linux add this line to /etc/profile
 
-	if [[ $(ps -o 'tty=' -p $$) =~ "ttyS" ]]; then /usr/local/bin/sttyfix; fi
+	if [[ $(ps -o 'tty=' -p $$) =~ tty[A-Z] ]]; then /usr/local/bin/sttyfix; fi
 
 To run sttyfix on booting FreeBSD add this line to /etc/csh.cshrc
 
